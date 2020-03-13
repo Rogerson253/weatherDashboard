@@ -1,9 +1,7 @@
 # weatherDashboard
 
-# dayPlanner
-
 # Live Link
-
+https://rogerson253.github.io/weatherDashboard/
 
 # Contributors
 @rogerson253
