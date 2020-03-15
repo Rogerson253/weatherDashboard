@@ -11,10 +11,10 @@ var queryTerm = "";
 var queryURLBase = "https://api.openweathermap.org/data/2.5/weather?appid=" + authKey;
 
 // Basic URL for UV Index
-var queryURL = "https://api.openweathermap.org/data/2.5/uvi?appid=68d666b75db062eebadc3796248de346&lat=36.17&lon=-86.78"
+var queryURL = "https://api.openweathermap.org/data/2.5/uvi?appid=" + authKey + "&lat=36.17&lon=-86.78";
 
 
-function callWeather() {
+function callWeather(queryURLBase) {
     
     // Calls object from OpenWeather for weather data
     $.ajax({
@@ -30,7 +30,6 @@ function callWeather() {
             console.log(response.wind.speed);
             console.log(response.main.humidity);
 
-            $("h2").append("Current Weather");
             
             // Appends response from OpenWeather to the page
             $("#weatherBlock").append("<h3>" + response.name + "</h3>");
@@ -38,6 +37,8 @@ function callWeather() {
             $("#weatherBlock").append("<h3>" + "Temperature: "+ response.main.temp + "</h3>");
             $("#weatherBlock").append("<h3>" + "Wind: "+ response.wind.speed + "</h3>");
             $("#weatherBlock").append("<h3>" + "Humidity: "+ response.main.humidity + "</h3>");
+
+        })
 
     // Calls object from OpenWeather for UV Index data
     $.ajax({
@@ -49,7 +50,7 @@ function callWeather() {
             $("#weatherBlock").append("<h3>" + "UV Index: " + response.value + "</h3>");
         })
 
-        })
+       
 }
 
 
@@ -59,12 +60,11 @@ $("#getWeather").on("click", function (e) {
     
     e.preventDefault();
 
+    // Takes in the inputted value
     queryTerm = $("#userInput").val().trim();
-    console.log(queryTerm);
 
+    // Concatenates inputted value with base url
     var newURL = queryURLBase + "&q=" + queryTerm;
-    console.log(newURL);
 
-
-    callWeather();
+    callWeather(newURL);
 })
