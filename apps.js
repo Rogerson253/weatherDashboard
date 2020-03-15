@@ -8,34 +8,36 @@ var authKey = "68d666b75db062eebadc3796248de346"
 var queryTerm = "";
 
 // Basic URL for weather
-var queryURLBase = "https://api.openweathermap.org/data/2.5/weather?appid=68d666b75db062eebadc3796248de346&q=Nashville";
+var queryURLBase = "https://api.openweathermap.org/data/2.5/weather?appid=" + authKey + "&q=" + queryTerm;
 
 // Basic URL for UV Index
-var queryURL = "http://api.openweathermap.org/data/2.5/uvi?appid=68d666b75db062eebadc3796248de346&lat=36.17&lon=-86.78"
+var queryURL = "https://api.openweathermap.org/data/2.5/uvi?appid=68d666b75db062eebadc3796248de346&lat=36.17&lon=-86.78"
 
-// Calls object from OpenWeather for weather data
+
 function callWeather() {
+    
+    // Calls object from OpenWeather for weather data
     $.ajax({
         url: queryURLBase,
         method: "GET",
     })
         .then(function (response) {
+            
             // Logs response from OpenWeather
             console.log(response.name);
             console.log(today);
             console.log(response.main.temp);
             console.log(response.wind.speed);
             console.log(response.main.humidity);
+
+            $("h2").append("Current Weather");
             
             // Appends response from OpenWeather to the page
             $("#weatherBlock").append("<h3>" + response.name + "</h3>");
             $("#weatherBlock").append("<h3>" + today + "</h3>");
-            $("#weatherBlock").append("<h3>" + response.main.temp + "</h3>");
-            $("#weatherBlock").append("<h3>" + response.wind.speed + "</h3>");
-            $("#weatherBlock").append("<h3>" + response.main.humidity + "</h3>");
-
-
-        })
+            $("#weatherBlock").append("<h3>" + "Temperature: "+ response.main.temp + "</h3>");
+            $("#weatherBlock").append("<h3>" + "Wind: "+ response.wind.speed + "</h3>");
+            $("#weatherBlock").append("<h3>" + "Humidity: "+ response.main.humidity + "</h3>");
 
     // Calls object from OpenWeather for UV Index data
     $.ajax({
@@ -44,7 +46,9 @@ function callWeather() {
     })
         .then(function (response) {
             console.log(response.value);
-            $("#weatherBlock").append("<h3>" + response.value + "</h3>");
+            $("#weatherBlock").append("<h3>" + "UV Index: " + response.value + "</h3>");
+        })
+
         })
 }
 
@@ -52,5 +56,7 @@ function callWeather() {
 
 // Onclick event that logs functions and appends them to the page
 $("#getWeather").on("click", function () {
+
+    queryTerm = 
     callWeather();
 })
