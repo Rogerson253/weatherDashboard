@@ -1,3 +1,5 @@
+var today = moment().format("dddd, MMMM Do YYYY");
+
 var authKey = "68d666b75db062eebadc3796248de346"
 
 // Empty variable for user input
@@ -17,8 +19,9 @@ $.ajax({
     .then(function(response){
         console.log(queryURLBase);
         console.log(response);
-        console.log(response.main.temp);
         console.log(response.name);
+        console.log(today);
+        console.log(response.main.temp); 
         console.log(response.wind.speed);
         console.log(response.main.humidity);
        
