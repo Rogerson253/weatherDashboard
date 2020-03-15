@@ -24,7 +24,7 @@ $.ajax({
        
     })
 }
-callWeather();
+
 
 // Calls object from OpenWeather for UV Index data
 function callUv() {
@@ -33,8 +33,16 @@ $.ajax({
     method: "GET",
 })
     .then(function(response){
+        console.log(queryURL);
         console.log(response);
         console.log(response.value);
     })
 }
-callUv();
+
+
+
+
+$("#getWeather").on("click", function(){
+    callWeather();
+    callUv();
+})
