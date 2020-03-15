@@ -8,7 +8,7 @@ var authKey = "68d666b75db062eebadc3796248de346"
 var queryTerm = "";
 
 // Basic URL for weather
-var queryURLBase = "https://api.openweathermap.org/data/2.5/weather?appid=68d666b75db062eebadc3796248de346&q=Nashville";
+var queryURLBase = "https://api.openweathermap.org/data/2.5/weather?appid=" + authKey;
 
 // Basic URL for UV Index
 var queryURL = "https://api.openweathermap.org/data/2.5/uvi?appid=68d666b75db062eebadc3796248de346&lat=36.17&lon=-86.78"
@@ -55,8 +55,16 @@ function callWeather() {
 
 
 // Onclick event that logs functions and appends them to the page
-$("#getWeather").on("click", function () {
-
+$("#getWeather").on("click", function (e) {
     
+    e.preventDefault();
+
+    queryTerm = $("#userInput").val().trim();
+    console.log(queryTerm);
+
+    var newURL = queryURLBase + "&q=" + queryTerm;
+    console.log(newURL);
+
+
     callWeather();
 })
