@@ -14,7 +14,7 @@ var queryURLBase = "https://api.openweathermap.org/data/2.5/weather?appid=" + au
 var queryURL = "https://api.openweathermap.org/data/2.5/uvi?appid=" + authKey;
  
 
-function callWeather(queryURLBase) {
+function callWeather(queryURLBase, queryTerm) {
     
     // Calls object from OpenWeather for weather data
     $.ajax({
@@ -42,7 +42,7 @@ function callWeather(queryURLBase) {
             $("#weatherBlock").append("<h4>" + "Wind: "+ response.wind.speed + "</h4>");
             $("#weatherBlock").append("<h4>" + "Humidity: "+ response.main.humidity + "</h4>");
 
-        //    Variables for latitude coords and longitude coords
+            // Variables for latitude coords and longitude coords
             var lat = response.coord.lat;
             var lon = response.coord.lon;
 
@@ -56,7 +56,36 @@ function callWeather(queryURLBase) {
     })
         .then(function (response) {
             console.log(response.value);
-            $("#weatherBlock").append("<h4>" + "UV Index: " + response.value + "</h4>");
+            console.log(queryTerm);
+
+            var color = "black";
+
+            if (response.value <= 2) {
+                console.log(response.value, "green");
+                color = "green";
+            }
+            else if (response.value <= 5) {
+                console.log(response.value, "yellow");
+                color = "yellow";
+            }
+            else if (response.value <= 7) {
+                console.log(response.value, "orange");
+                color = "orange";
+            } 
+            else if (response.value <= 10) {
+                console.log(response.value, "red");
+                color = "red";
+            } 
+            else if (response.value > 10) {
+                console.log(response.value, "Put on some sunscreen.");
+                color = "purple";
+            } 
+            
+         
+
+            $("#weatherBlock").append("<h4>" + "UV Index: <span id=" + queryTerm + "> " + response.value + "</span></h4>");
+            document.getElementById(queryTerm).style.color = color;
+           
         })
     })
 }
@@ -74,5 +103,6 @@ $("#getWeather").on("click", function (e) {
     // Concatenates inputted value with base url
     var newURL = queryURLBase + "&q=" + queryTerm;
 
-    callWeather(newURL);
+    callWeather(newURL, queryTerm);
+
 })
