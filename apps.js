@@ -34,7 +34,7 @@ function callWeather(queryURLBase, queryTerm) {
             console.log(response.wind.speed);
             console.log(response.main.humidity);
 
-            
+            $("#weatherBlock").empty();
             // Appends response from OpenWeather to the page
             $("#weatherBlock").append("<h4>" + response.name + "</h4>");
             $("#weatherBlock").append("<h4>" + today + "</h4>");
