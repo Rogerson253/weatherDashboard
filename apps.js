@@ -7,9 +7,6 @@ var authKey = "68d666b75db062eebadc3796248de346"
 // Empty variable for user input
 var queryTerm = "";
 
-var lat = "";
-var lon = "";
-
 // Basic URL for weather
 var queryURLBase = "https://api.openweathermap.org/data/2.5/weather?appid=" + authKey;
 
@@ -17,7 +14,7 @@ var queryURLBase = "https://api.openweathermap.org/data/2.5/weather?appid=" + au
 var queryURL = "https://api.openweathermap.org/data/2.5/uvi?appid=" + authKey;
  
 
-function callWeather(queryURLBase, queryURL) {
+function callWeather(queryURLBase) {
     
     // Calls object from OpenWeather for weather data
     $.ajax({
@@ -45,17 +42,23 @@ function callWeather(queryURLBase, queryURL) {
             $("#weatherBlock").append("<h4>" + "Wind: "+ response.wind.speed + "</h4>");
             $("#weatherBlock").append("<h4>" + "Humidity: "+ response.main.humidity + "</h4>");
 
-        })
+        //    Variables for latitude coords and longitude coords
+            var lat = response.coord.lat;
+            var lon = response.coord.lon;
 
+            // A new url based on the city inputted
+            var newUV = queryURL + "&lat=" + lat + "&lon=" + lon;
+            
     // Calls object from OpenWeather for UV Index data
     $.ajax({
-        url: queryURL,
+        url: newUV,
         method: "GET",
     })
         .then(function (response) {
             console.log(response.value);
             $("#weatherBlock").append("<h4>" + "UV Index: " + response.value + "</h4>");
         })
+    })
 }
 
 
@@ -71,11 +74,5 @@ $("#getWeather").on("click", function (e) {
     // Concatenates inputted value with base url
     var newURL = queryURLBase + "&q=" + queryTerm;
 
-    lat = ""; 
-
-    lon = "";
-
-    var newUV = queryURL + "&lat=" + lat + "&lon=" + lon;
-
-    callWeather(newURL, newUV);
+    callWeather(newURL);
 })
