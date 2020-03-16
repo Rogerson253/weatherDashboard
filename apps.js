@@ -13,6 +13,7 @@ var queryURLBase = "https://api.openweathermap.org/data/2.5/weather?appid=" + au
 // Basic URL for UV Index
 var queryURL = "https://api.openweathermap.org/data/2.5/uvi?appid=" + authKey;
  
+var cities = "";
 
 function callWeather(queryURLBase, queryTerm) {
     
@@ -23,10 +24,6 @@ function callWeather(queryURLBase, queryTerm) {
     })
         .then(function (response) {
             
-            console.log(response.coord);
-            console.log(response.coord.lon);
-            console.log(response.coord.lat);
-            
             // Logs response from OpenWeather
             console.log(response.name);
             console.log(today);
@@ -34,7 +31,9 @@ function callWeather(queryURLBase, queryTerm) {
             console.log(response.wind.speed);
             console.log(response.main.humidity);
 
+            // Clears previous entry
             $("#weatherBlock").empty();
+           
             // Appends response from OpenWeather to the page
             $("#weatherBlock").append("<h4>" + response.name + "</h4>");
             $("#weatherBlock").append("<h4>" + today + "</h4>");
@@ -81,8 +80,6 @@ function callWeather(queryURLBase, queryTerm) {
                 color = "purple";
             } 
             
-         
-
             $("#weatherBlock").append("<h4>" + "UV Index: <span id=" + queryTerm + "> " + response.value + "</span></h4>");
             document.getElementById(queryTerm).style.color = color;
            
@@ -99,6 +96,14 @@ $("#getWeather").on("click", function (e) {
 
     // Takes in the inputted value
     queryTerm = $("#userInput").val().trim();
+
+    localStorage.setItem("City", queryTerm);
+    console.log(queryTerm);
+
+    var cityPaste = localStorage.getItem("City");
+    console.log(cityPaste);
+
+    $("#history").append("<h4>" + cityPaste + "</h4>");
 
     // Concatenates inputted value with base url
     var newURL = queryURLBase + "&q=" + queryTerm;
