@@ -8,18 +8,40 @@ var authKey = "68d666b75db062eebadc3796248de346"
 var queryTerm = "";
 
 // Basic URL for weather
-var queryURLBase = "https://api.openweathermap.org/data/2.5/weather?appid=" + authKey;
+var queryURLBase = "https://api.openweathermap.org/data/2.5/weather?appid=" + authKey + "&q=";
 
 // Basic URL for UV Index
 var queryURL = "https://api.openweathermap.org/data/2.5/uvi?appid=" + authKey;
  
-var cities = "";
+
+
+
+if (JSON.parse(localStorage.getItem("Cities"))) {
+    var city = JSON.parse(localStorage.getItem("Cities"));
+    callWeather(queryURLBase, city[city.length-1]);
+    cityStick();
+}
+else {
+    var city = [];
+}
+
+
+
+function cityStick() {
+    $("#history").empty();
+
+    for (var i = 0; i < city.length; i++) {
+        $("#history").append("<h4>" + city[i] + "</h4>");
+    }
+    
+}
+
 
 function callWeather(queryURLBase, queryTerm) {
-    
+    console.log(queryURLBase, queryTerm);
     // Calls object from OpenWeather for weather data
     $.ajax({
-        url: queryURLBase,
+        url: queryURLBase + queryTerm,
         method: "GET",
     })
         .then(function (response) {
@@ -56,7 +78,8 @@ function callWeather(queryURLBase, queryTerm) {
         .then(function (response) {
             console.log(response.value);
             console.log(queryTerm);
-
+            var queryTermTrimmed = queryTerm.toLowerCase().replace(" ", "")
+            console.log(queryTermTrimmed);
             var color = "black";
 
             if (response.value <= 2) {
@@ -71,22 +94,21 @@ function callWeather(queryURLBase, queryTerm) {
                 console.log(response.value, "orange");
                 color = "orange";
             } 
-            else if (response.value <= 10) {
+            else if (response.value < 11) {
                 console.log(response.value, "red");
                 color = "red";
             } 
-            else if (response.value > 10) {
+            else if (response.value > 11) {
                 console.log(response.value, "Put on some sunscreen.");
                 color = "purple";
             } 
             
-            $("#weatherBlock").append("<h4>" + "UV Index: <span id=" + queryTerm + "> " + response.value + "</span></h4>");
-            document.getElementById(queryTerm).style.color = color;
+            $("#weatherBlock").append("<h4>" + "UV Index: <span id=" + queryTermTrimmed + "> " + response.value + "</span></h4>");
+            document.getElementById(queryTermTrimmed).style.color = color;
            
         })
     })
 }
-
 
 
 // Onclick event that prints weather info to the page
@@ -97,17 +119,28 @@ $("#getWeather").on("click", function (e) {
     // Takes in the inputted value
     queryTerm = $("#userInput").val().trim();
 
-    localStorage.setItem("City", queryTerm);
-    console.log(queryTerm);
-
-    var cityPaste = localStorage.getItem("City");
-    console.log(cityPaste);
-
-    $("#history").append("<h4>" + cityPaste + "</h4>");
-
     // Concatenates inputted value with base url
-    var newURL = queryURLBase + "&q=" + queryTerm;
+    var newURL = queryURLBase;
+   
+    console.log(city);
 
     callWeather(newURL, queryTerm);
-
+    cityStore();
+    cityStick();
 })
+
+
+
+function cityStore() {
+
+    queryTerm = $("#userInput").val().trim();
+
+    city.push(queryTerm);
+    if (city.length > 5) {
+        city.shift();
+        console.log(city);
+    }
+    localStorage.setItem("Cities", JSON.stringify(city));
+   
+}
+
