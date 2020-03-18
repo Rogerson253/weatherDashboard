@@ -13,7 +13,7 @@ var queryURLBase = "https://api.openweathermap.org/data/2.5/weather?appid=" + au
 // Basic URL for UV Index
 var queryURL = "https://api.openweathermap.org/data/2.5/uvi?appid=" + authKey;
  
-
+var forecastURL = "https://api.openweathermap.org/data/2.5/forecast?appid=" + authKey + "&q=Nashville";
 
 
 if (JSON.parse(localStorage.getItem("Cities"))) {
@@ -110,6 +110,35 @@ function callWeather(queryURLBase, queryTerm) {
     })
 }
 
+function fiveDayForecast() {
+
+    $.ajax({
+        url: forecastURL,
+        method: "GET",
+    })
+        .then(function(response) {
+            console.log(forecastURL);
+            console.log(response);
+            // 6:00 A.M
+            console.log(response.list[2].main.temp);
+            console.log(response.list[2].weather[0].main);
+            console.log(response.list[2].weather[0].description);
+            console.log(response.list[2].weather[0].icon);
+            console.log(response.list[2].main.humidity);
+            // 12:00 P.M
+            console.log(response.list[4].main.temp);
+            console.log(response.list[4].weather[0].main);
+            console.log(response.list[4].weather[0].description);
+            console.log(response.list[4].weather[0].icon);
+            console.log(response.list[4].main.humidity);
+            // 6:00 P.M
+            console.log(response.list[6].main.temp);
+            console.log(response.list[6].weather[0].main);
+            console.log(response.list[6].weather[0].description);
+            console.log(response.list[6].weather[0].icon);
+            console.log(response.list[6].main.humidity);
+        })
+}
 
 // Onclick event that prints weather info to the page
 $("#getWeather").on("click", function (e) {
@@ -125,6 +154,7 @@ $("#getWeather").on("click", function (e) {
     console.log(city);
 
     callWeather(newURL, queryTerm);
+    fiveDayForecast();
     cityStore();
     cityStick();
 })
