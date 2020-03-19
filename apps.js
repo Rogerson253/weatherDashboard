@@ -119,24 +119,17 @@ function fiveDayForecast() {
         .then(function(response) {
             console.log(forecastURL);
             console.log(response);
-            // 6:00 A.M
-            console.log(response.list[2].main.temp);
-            console.log(response.list[2].weather[0].main);
-            console.log(response.list[2].weather[0].description);
-            console.log(response.list[2].weather[0].icon);
-            console.log(response.list[2].main.humidity);
+        
+            for (var i = 0; i < response.list.length; i++) {
+                if (response.list[i].dt_txt.indexOf("12:00:00") !== -1) {
             // 12:00 P.M
-            console.log(response.list[4].main.temp);
-            console.log(response.list[4].weather[0].main);
-            console.log(response.list[4].weather[0].description);
-            console.log(response.list[4].weather[0].icon);
-            console.log(response.list[4].main.humidity);
-            // 6:00 P.M
-            console.log(response.list[6].main.temp);
-            console.log(response.list[6].weather[0].main);
-            console.log(response.list[6].weather[0].description);
-            console.log(response.list[6].weather[0].icon);
-            console.log(response.list[6].main.humidity);
+            $("#forecast").append("<h4>" + response.list[i].main.temp + "<h4>");
+            $("#forecast").append("<h4>" + response.list[i].weather[0].main + "<h4>");
+            $("#forecast").append("<h4>" + response.list[i].weather[0].description + "<h4>");
+            $("#forecast").append("<h4>" + response.list[i].weather[0].icon + "<h4>");
+            $("#forecast").append("<h4>" + response.list[i].main.humidity + "<h4>");
+            }
+        }
         })
 }
 
