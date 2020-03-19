@@ -45,7 +45,7 @@ function callWeather(queryURLBase, queryTerm) {
         method: "GET",
     })
         .then(function (response) {
-            
+            console.log(response);
             // Logs response from OpenWeather
             console.log(response.name);
             console.log(today);
@@ -59,6 +59,7 @@ function callWeather(queryURLBase, queryTerm) {
             // Appends response from OpenWeather to the page
             $("#weatherBlock").append("<h4>" + response.name + "</h4>");
             $("#weatherBlock").append("<h4>" + today + "</h4>");
+            $("#weatherBlock").append("<img src='https://openweathermap.org/img/w/" + response.weather[0].icon + ".png'>");
             $("#weatherBlock").append("<h4>" + "Temperature: "+ response.main.temp + "</h4>");
             $("#weatherBlock").append("<h4>" + "Wind: "+ response.wind.speed + "</h4>");
             $("#weatherBlock").append("<h4>" + "Humidity: "+ response.main.humidity + "</h4>");
