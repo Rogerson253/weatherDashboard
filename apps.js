@@ -128,9 +128,9 @@ function fiveDayForecast(forecastURL, queryTerm) {
 
                 if (response.list[i].dt_txt.indexOf("12:00:00") !== -1) {
                     // 12:00 P.M
-                    // var nextDay = moment().add(1, "day");
-                    // console.log(nextDay);
-                    // $("#forecast").append("<h4>" + nextDay + "<h4>");
+                    var nextDay = moment().add(i + 1, "day").format("dddd");
+                    console.log(nextDay);
+                    $("#forecast").append("<h4>" + nextDay + "<h4>");
                     $("#forecast").append("<img src='https://openweathermap.org/img/w/" + response.list[i].weather[0].icon + ".png'>");
                     $("#forecast").append("<h4>" + temp + " degrees F" + "<h4>");
                     $("#forecast").append("<h4>" + response.list[i].weather[0].main + "<h4>");
@@ -161,6 +161,7 @@ $("#getWeather").on("click", function (e) {
     fiveDayForecast(forecast, queryTerm);
     cityStore();
     cityStick();
+    $("#userInput").val("");
 })
 
 
