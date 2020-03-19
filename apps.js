@@ -13,7 +13,7 @@ var queryURLBase = "https://api.openweathermap.org/data/2.5/weather?appid=" + au
 // Basic URL for UV Index
 var queryURL = "https://api.openweathermap.org/data/2.5/uvi?appid=" + authKey;
  
-var forecastURL = "https://api.openweathermap.org/data/2.5/forecast?appid=" + authKey + "&q=Nashville";
+var forecastURL = "https://api.openweathermap.org/data/2.5/forecast?appid=" + authKey + "&q=";
 
 
 if (JSON.parse(localStorage.getItem("Cities"))) {
@@ -110,10 +110,10 @@ function callWeather(queryURLBase, queryTerm) {
     })
 }
 
-function fiveDayForecast() {
-
+function fiveDayForecast(forecastURL, queryTerm) {
+    console.log(forecastURL, queryTerm);
     $.ajax({
-        url: forecastURL,
+        url: forecastURL + queryTerm,
         method: "GET",
     })
         .then(function(response) {
@@ -123,11 +123,12 @@ function fiveDayForecast() {
             for (var i = 0; i < response.list.length; i++) {
                 if (response.list[i].dt_txt.indexOf("12:00:00") !== -1) {
             // 12:00 P.M
+            $("#forecast").append("<img src='https://openweathermap.org/img/w/" + response.list[i].weather[0].icon + ".png'>");
             $("#forecast").append("<h4>" + response.list[i].main.temp + "<h4>");
             $("#forecast").append("<h4>" + response.list[i].weather[0].main + "<h4>");
             $("#forecast").append("<h4>" + response.list[i].weather[0].description + "<h4>");
-            $("#forecast").append("<h4>" + response.list[i].weather[0].icon + "<h4>");
             $("#forecast").append("<h4>" + response.list[i].main.humidity + "<h4>");
+            
             }
         }
         })
@@ -143,11 +144,13 @@ $("#getWeather").on("click", function (e) {
 
     // Concatenates inputted value with base url
     var newURL = queryURLBase;
+
+    var forecast = forecastURL;
    
     console.log(city);
 
     callWeather(newURL, queryTerm);
-    fiveDayForecast();
+    fiveDayForecast(forecast, queryTerm);
     cityStore();
     cityStick();
 })
