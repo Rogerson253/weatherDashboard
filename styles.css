@@ -1,5 +1,13 @@
+body {
+    margin: 1%;
+}
+
 .jumbotron {
     text-align: center;
+}
+
+.form-control {
+    width: 20%;
 }
 
 .card {
