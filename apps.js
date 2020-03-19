@@ -53,6 +53,7 @@ function callWeather(queryURLBase, queryTerm) {
             console.log(response.wind.speed);
             console.log(response.main.humidity);
 
+            var temp = Math.floor((response.main.temp - 273.15) * 1.80 + 32);
             // Clears previous entry
             $("#weatherBlock").empty();
            
@@ -60,7 +61,7 @@ function callWeather(queryURLBase, queryTerm) {
             $("#weatherBlock").append("<h4>" + response.name + "</h4>");
             $("#weatherBlock").append("<h4>" + today + "</h4>");
             $("#weatherBlock").append("<img src='https://openweathermap.org/img/w/" + response.weather[0].icon + ".png'>");
-            $("#weatherBlock").append("<h4>" + "Temperature: "+ response.main.temp + "</h4>");
+            $("#weatherBlock").append("<h4>" + "Temperature: "+ temp + " degrees F" + "</h4>");
             $("#weatherBlock").append("<h4>" + "Wind: "+ response.wind.speed + "</h4>");
             $("#weatherBlock").append("<h4>" + "Humidity: "+ response.main.humidity + "</h4>");
 
@@ -122,14 +123,20 @@ function fiveDayForecast(forecastURL, queryTerm) {
             console.log(response);
         
             for (var i = 0; i < response.list.length; i++) {
+
+                var temp = Math.floor((response.list[i].main.temp - 273.15) * 1.80 + 32);
+
                 if (response.list[i].dt_txt.indexOf("12:00:00") !== -1) {
-            // 12:00 P.M
-            $("#forecast").append("<img src='https://openweathermap.org/img/w/" + response.list[i].weather[0].icon + ".png'>");
-            $("#forecast").append("<h4>" + response.list[i].main.temp + "<h4>");
-            $("#forecast").append("<h4>" + response.list[i].weather[0].main + "<h4>");
-            $("#forecast").append("<h4>" + response.list[i].weather[0].description + "<h4>");
-            $("#forecast").append("<h4>" + response.list[i].main.humidity + "<h4>");
-            
+                    // 12:00 P.M
+                    // var nextDay = moment().add(1, "day");
+                    // console.log(nextDay);
+                    // $("#forecast").append("<h4>" + nextDay + "<h4>");
+                    $("#forecast").append("<img src='https://openweathermap.org/img/w/" + response.list[i].weather[0].icon + ".png'>");
+                    $("#forecast").append("<h4>" + temp + " degrees F" + "<h4>");
+                    $("#forecast").append("<h4>" + response.list[i].weather[0].main + "<h4>");
+                    $("#forecast").append("<h4>" + response.list[i].weather[0].description + "<h4>");
+                    $("#forecast").append("<h4>" + response.list[i].main.humidity + "<h4>");
+                    
             }
         }
         })
