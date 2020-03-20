@@ -58,12 +58,17 @@ function callWeather(queryURLBase, queryTerm) {
             $("#weatherBlock").empty();
            
             // Appends response from OpenWeather to the page
-            $("#weatherBlock").append("<h4>" + response.name + "</h4>");
-            $("#weatherBlock").append("<h4>" + today + "</h4>");
-            $("#weatherBlock").append("<img src='https://openweathermap.org/img/w/" + response.weather[0].icon + ".png'>");
-            $("#weatherBlock").append("<h4>" + "Temperature: "+ temp + " degrees F" + "</h4>");
-            $("#weatherBlock").append("<h4>" + "Wind: "+ response.wind.speed + "</h4>");
-            $("#weatherBlock").append("<h4>" + "Humidity: "+ response.main.humidity + "</h4>");
+            var cards = $("<div>");
+            cards.addClass("card-body")
+
+            cards.append("<h4>" + response.name + "</h4>");
+            cards.append("<h4>" + today + "</h4>");
+            cards.append("<img src='https://openweathermap.org/img/w/" + response.weather[0].icon + ".png'>");
+            cards.append("<h4>" + "Temperature: "+ temp + " degrees F" + "</h4>");
+            cards.append("<h4>" + "Wind: "+ response.wind.speed + "</h4>");
+            cards.append("<h4>" + "Humidity: "+ response.main.humidity + "</h4>");
+
+            $("#weatherBlock").append(cards);
 
             // Variables for latitude coords and longitude coords
             var lat = response.coord.lat;
@@ -105,7 +110,7 @@ function callWeather(queryURLBase, queryTerm) {
                 color = "purple";
             } 
             
-            $("#weatherBlock").append("<h4>" + "UV Index: <span id=" + queryTermTrimmed + "> " + response.value + "</span></h4>");
+            cards.append("<h4>" + "UV Index: <span id=" + queryTermTrimmed + "> " + response.value + "</span></h4>");
             document.getElementById(queryTermTrimmed).style.color = color;
            
         })
@@ -128,15 +133,20 @@ function fiveDayForecast(forecastURL, queryTerm) {
 
                 if (response.list[i].dt_txt.indexOf("12:00:00") !== -1) {
                     // 12:00 P.M
+                    var cardCast = $("<div>");
+                    cardCast.addClass("list-group-item");
+                    
                     var nextDay = moment().add(i + 1, "day").format("dddd");
                     console.log(nextDay);
-                    $("#forecast").append("<h4>" + nextDay + "<h4>");
-                    $("#forecast").append("<img src='https://openweathermap.org/img/w/" + response.list[i].weather[0].icon + ".png'>");
-                    $("#forecast").append("<h4>" + temp + " degrees F" + "<h4>");
-                    $("#forecast").append("<h4>" + response.list[i].weather[0].main + "<h4>");
-                    $("#forecast").append("<h4>" + response.list[i].weather[0].description + "<h4>");
-                    $("#forecast").append("<h4>" + response.list[i].main.humidity + "<h4>");
                     
+                    cardCast.append("<h4>" + nextDay + "<h4>");
+                    cardCast.append("<img src='https://openweathermap.org/img/w/" + response.list[i].weather[0].icon + ".png'>");
+                    cardCast.append("<h4>" + temp + " degrees F" + "<h4>");
+                    cardCast.append("<h4>" + response.list[i].weather[0].main + "<h4>");
+                    cardCast.append("<h4>" + response.list[i].weather[0].description + "<h4>");
+                    cardCast.append("<h4>" + response.list[i].main.humidity + "<h4>");
+                    
+                    $("#forecast").append(cardCast);
             }
         }
         })
