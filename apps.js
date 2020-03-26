@@ -38,20 +38,13 @@ function cityStick() {
 
 
 function callWeather(queryURLBase, queryTerm) {
-    console.log(queryURLBase, queryTerm);
+    
     // Calls object from OpenWeather for weather data
     $.ajax({
         url: queryURLBase + queryTerm,
         method: "GET",
     })
         .then(function (response) {
-            console.log(response);
-            // Logs response from OpenWeather
-            console.log(response.name);
-            console.log(today);
-            console.log(response.main.temp);
-            console.log(response.wind.speed);
-            console.log(response.main.humidity);
 
             var temp = Math.floor((response.main.temp - 273.15) * 1.80 + 32);
             // Clears previous entry
@@ -83,30 +76,24 @@ function callWeather(queryURLBase, queryTerm) {
         method: "GET",
     })
         .then(function (response) {
-            console.log(response.value);
-            console.log(queryTerm);
+         
             var queryTermTrimmed = queryTerm.toLowerCase().replace(" ", "")
-            console.log(queryTermTrimmed);
+            
             var color = "black";
 
             if (response.value <= 2) {
-                console.log(response.value, "green");
                 color = "green";
             }
             else if (response.value <= 5) {
-                console.log(response.value, "yellow");
                 color = "yellow";
             }
             else if (response.value <= 7) {
-                console.log(response.value, "orange");
                 color = "orange";
             } 
             else if (response.value < 11) {
-                console.log(response.value, "red");
                 color = "red";
             } 
             else if (response.value > 11) {
-                console.log(response.value, "Put on some sunscreen.");
                 color = "purple";
             } 
             
@@ -118,15 +105,12 @@ function callWeather(queryURLBase, queryTerm) {
 }
 
 function fiveDayForecast(forecastURL, queryTerm) {
-    console.log(forecastURL, queryTerm);
     $.ajax({
         url: forecastURL + queryTerm,
         method: "GET",
     })
         .then(function(response) {
-            console.log(forecastURL);
-            console.log(response);
-        
+         
             for (var i = 0; i < response.list.length; i++) {
 
                 var temp = Math.floor((response.list[i].main.temp - 273.15) * 1.80 + 32);
@@ -164,8 +148,6 @@ $("#getWeather").on("click", function (e) {
     var newURL = queryURLBase;
 
     var forecast = forecastURL;
-   
-    console.log(city);
 
     callWeather(newURL, queryTerm);
     fiveDayForecast(forecast, queryTerm);
@@ -183,7 +165,6 @@ function cityStore() {
     city.push(queryTerm);
     if (city.length > 5) {
         city.shift();
-        console.log(city);
     }
     localStorage.setItem("Cities", JSON.stringify(city));
    
