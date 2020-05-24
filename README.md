@@ -1,5 +1,5 @@
 # weatherDashboard
-An app that allows tou to search for the weather of a city
+An app that allows to search for the weather of a city
 
 # Live Link
 https://rogerson253.github.io/weatherDashboard/
